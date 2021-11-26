@@ -1,0 +1,405 @@
+1. 기본규칙 
+<?php 
+	PHP 코드
+?>
+<?
+	php 코드
+?>
+
+파일명 확장자.php
+2. 변수
+	$변수명 = 값;
+	
+	echo 
+	print 
+
+	문자열을 큰따옴표 ""  -> PHP 변수를 포함해서 출력
+	문자열을 작은따옴표 '' -> PHP 변수 포함 X 
+	
+
+	heredoc  - 변수도 사용 가능
+	$변수명 = <<<구분문자 
+				내용 
+	구분문자;
+	
+	예)
+	$변수명 = <<<EOD
+				sadasdsadasd
+	EOD;
+	
+	
+	참조변수
+	&$a -> $a변수의 주소값
+	
+	동적변수 
+	$school = "연희직업전문학교";
+	$a = 'school';
+	echo $$a; // $$a == $school 
+
+	define("상수명", 값);
+		- 대문자, 단어 사이 _ 입력
+		
+	
+2.1 연산자
+  산술연산자(+,-,*,/ %)
+  
+   타 언어(자바스크립트, 자바)
+  문자열1 + 문자열2 -> 문자열1문자열2
+  
+   PHP 
+   마침표(.) -> 문자열 결합
+   
+3. 조건문 
+	if ~ if else , else 
+
+3. 선택문
+	switch, case, break, default
+
+4. 반복문
+	while(조건문) {
+		
+	}
+	
+	do {
+	
+	} while(조건문);
+	
+	for(초기화식; 조건식; 증감식) {
+	
+	}
+	
+	foreach ( ...... )
+	
+4.1 초전역변수
+ - 지역 내(함수 내)에서 제약없이 접근 가능한 전역변수 
+ - 지역 내에서 전역변수라고 명시 X -> 전역변수로 동작 
+
+	$GLOBALS - 정의한 전역변수 전체가 담겨 있는 배열
+	
+	$_SERVER - 요청 헤더 + 서버 환경에 대한 정보
+					(HTTP_속성 -> 요청 헤더)
+	
+	$_GET - GET방식으로 요청을 보낸 데이터
+	$_POST - POST 방식으로 요청을 보낸 데이터
+	
+	$_FILES - 업로드한 파일의 정보(+ 임시 경로에 저장된 파일 경로)
+		tmp_name -> 업로드한 파일 데이터가 임시로 저장되어 있는 경로 
+		-> 실제 서버로 파일을 옮기면 업로드 
+		move_uploaded_file
+				
+	$_COOKIE - 쿠키에 담은 데이터 
+	$_SESSION - 세션에 담은 데이터 
+	
+	$_REQUEST - GET 방식, POST 방식, 쿠키 데이터
+	
+	$_ENV
+	
+	print_r(배열)-> 배열 안에 있는 데이터 
+
+5. 배열 
+	Map -> 키, 값 
+	$변수명 = [];
+	$변수명 = array();
+	
+	$변수명 = [
+		'키' => '값',
+		'키' => '값',
+		'키' => '값',
+	];
+	- 빈 대괄호[] = 대입 -> 인덱스 마지막 숫자 키 값으로 추가 
+	- 없는 키값에 대입하면 추가 
+	- 있는 키값에 대입하면 수정 
+	- array_push -> 배열 끝에 추가 
+					
+	- unset  - 변수/배열 키값의 값을 비울때
+	- isset -> 변수/벼열 키값이 값(비어있는 값을 포함)을 지정했는지 여부
+	
+	- 배열의 요소의 갯수 체크 하는 함수 - count() / sizeof()
+	
+	- 
+	foreach ($배열 변수 as $key => $value ) {
+	
+	}
+	
+	foreach ($배열 변수 as $value ) {
+	
+	}
+	
+	
+	배열 -> 문자열로 결합 -> implode("결합자", 배열); -> 문자열
+	문자열 -> 배열로 변환 -> explode("결합자", 문자열); -> 결합자로 분해된 배열
+6. 함수
+	1)
+		function 함수명 (매개변수) {
+			
+			return "반환값";
+		}
+
+	2) 익명함수
+		함수 이름이 없는 함수
+		-> 함수를 가장한 클로져 객체 
+		   (Closure 인스턴스 - __invoke()가 호출되면서 실행)
+		
+		1) 함수를 매개변수로 사용할때 
+			function outerFunc($fruits, $callback) {
+				foreach ($fruits as $index => $fruit) {
+					$callback($fruit, $index);
+				}
+			}
+
+
+			$fruits = ["apple", "orange", "mango", "banana"];
+			outerFunc($fruits, function($fruit, $index) {
+				printf("%d = %s <br>", $index, $fruit);
+			});
+			
+		2) 반환값으로 함수(익명함수, 클로져 인스턴스)를 사용할때 
+			function outerFunc($num1) {
+	
+				return function ($num2) use ($num1) {
+						return $num1 + $num2;
+				};
+			}
+
+			$outer = outerFunc(10);
+			echo $outer(30);
+			
+	3) 가변인수 
+7. 객체
+	1) class 구문 기반 
+		
+		접근제어자 $변수명;  // 멤버 변수 
+		
+		
+		접근제어자 function 메서드명 (........) {
+			
+		}
+	
+		$this->속성명
+		$this->메서드명
+		
+		속성 접근 연산자  -> 
+		
+		생성자 메서드 __construct() 생성자 함수 
+		   1. 인스턴스 생성 
+		   2. 인스턴스 변수의 초기화
+		   3. 반환값 X(return X)
+		
+		
+		접근제어자
+			public -> 클래스 내부, 외부에서 접근이 가능 
+			protected -> private과 동일 -> 상속을 통해서 상속받은 클래스 내부에서 접근 가능 
+			private -> 클래스 내부에서만 접근 가능 
+		
+		$this 현재 인스턴스의 주소(+부모클래스의 인스턴스 주소)
+		parent  부모클래스 인스턴의 주소
+		parent::메서드명
+		
+		
+	2) 정적 변수, 정적 메서드
+		클래스명::변수명 
+		클래스명::메서드명
+		
+		클래스 내부에서 정적 변수, 정적 메서드를 접근할때 
+		self::$변수명
+		self::메서드명()
+		
+		싱글톤 패턴 
+	
+	3) 상속 
+		extends 
+		
+		상위 클래스의 메서드 parent::메서드명() (메서드가 상위클래스에서만 있는 경우 $this->메서드());
+		상위클래스의 인스턴스 변수 -> $this->변수명
+		
+	4) 추상 클래스 
+	5) 인터페이스
+		implements 
+	
+	6) trait 
+	trait 명칭 {
+		멤버변수 
+		인스턴스 메서드 
+		static 메서드
+	}
+	
+	http://yonggyo.com:60000/yonggyo/lecture/
+	http://yonggyo.com:60000/yonggyo/lecture/-/tree/master/5.PHP%20%EC%8B%AC%ED%99%94
+	
+	
+	7) final 예약어
+		final 클래스명 -> 상속 불가 
+		final 메서드명 -> 재정의 불가 
+
+	8) 익명 클래스 
+		자바) -> 참조 변수가 없는 인스턴스
+			return new Person();
+			
+		PHP) -> 이름이 없는 클래스
+		new class {
+			멤버 변수
+			인스턴스 메서드.....
+		}
+	9) magic 메서드
+		__toString() - 인스턴스를 출력할때 자동으로 호출되는 메서드
+		
+		__invoke() -> 인스턴스를 함수처럼 호출하면 클래스 내부의 __invoke()메서드가 호출된다.
+	    -- 오버로딩 관련 메서드 
+		 -> 없는 속성에 접근, 없는 메서드에 접근할때 자동으로 호출되는 메서드
+		 
+			속성 오버로딩
+			__set($name, $value) -> 없는 속성의 값을 변경, 접근불가능한 속성(private, protected)의 값을 변경할때 
+			
+			__get ($name) -> 없는 속성의 값을 읽거나, 접근불가능한 속성(private, protected)의 값을 읽을때 
+			
+			__isset($name) -> 없는 속성(+ 접근불가 속성)에 isset(), 또는 empty() 함수를 호출 했을 때 
+			
+			__unset($name) -> 없는 속성(+ 접근불가 속성)에 unset() 함수를 호출 할때 호출 된다.
+			
+			메서드 오버로딩
+			__call($name, $arguments) -> 없거나 접근불가 인스턴스 메서드를 호출 했을때 호출되는 메서드
+			($name - 메서드명, $arguments - 매개변수)
+			
+			static __callStatic($name, $arugment) -> 없거나 접근불가 정적(static) 메서드를 호출 했을 때 호출되는 메서드
+			($name - 메서드명, $arguments - 매개변수)
+			
+			
+	10) magic 상수(constant)
+		__LINE__ -> 파일에서 현재 실행중인 라인 넘버 
+		__FILE__  -> 현재 실행중인 파일의 파일명 포함 절대 경로
+		__DIR__   -> 현재 실행중인 파일의 절대 경로(파일명 포함 X)
+		__FUNCTION__ -> 현재 호출 중인 함수명
+		__CLASS__ -> 클래스명
+		__TRAIT__ -> Trait 명 
+		__NAMESPACE__ -> 현재 네임스페이스 값 
+	
+8. 	데이터베이스
+	PDO(PHP Data Object)
+	PDO::__construct($dsn - 데이터베이스 엔진 접속 정보, $username, $password)  throws PDOException 
+		PDO::exec - (executeUpdate) - DELETE, UPDATE, INSERT ... 
+		     - 반영된 투플의 갯수
+		PDO::query - (executeQuery) - SELECT	
+			- PDOStatement 인스턴스 반환 -> 데이터 조회 
+					- fetch   -> 조회된 투플을 다음 투플로 이동하면서 가져온다
+	
+							PDO::FETCH_ASSOC -> 연관배열(테이블속성 => 값)
+							PDO::FETCH_NUM -> 인덱스 배열(인덱스 => 값)
+							PDO::FETCH_BOTH -> 연관배열 + 인덱스 배열(기본값)
+				
+	
+		PDO::prepare - PrepareStatement
+				-> SQL 구문을 준비 + 바인딩할 변수
+				-> PDOStatement 인스턴스 반환
+						-> 값을 바인딩 
+						
+				-> SQL 실행(PDO::execute());
+				
+
+9.	클로져
+- 익명함수
+	$변수명 = function (.... ) {}
+	
+	-> 함수를 가장한 Closure 인스턴스
+	 -> 인스턴스를 함수처럼 호출하면 -> __invoke()
+		
+10.쿠키
+	setcookie -> 쿠키 값 지정, 수정, 삭제(만료시간을 현재 보다 앞당기면 삭제)
+	
+	$_COOKIE
+	
+11. 세션
+	session_start(); // 세션 시작  -> PHPSESSID 쿠키값 생성
+	session_destroy(); // 세션 전체 비우기
+	
+		Node.js + Express -> req.session.destory()
+		Java - JSP -> HttpSession session.invalidate();
+	
+	$_SESSION - 세션 조회, 세션 추가, 세션 삭제(unset)
+		
+
+
+11. 파일 추가 
+include "파일 경로"; // 파일이 없는 경우 경고 발생(스크립트 실행 유지)
+require "파일 경로"; // 파일이 없는 경우 에러 발생(스크립트 중단)
+
+같은 파일을 여러번 추가 하더라도 단 한번만 추가 
+include_once "파일 경로"; 
+require_once "파일 경로";
+
+
+
+__DIR__ -> 현재 실행중인 파일의 디렉토리 절대 경로
+__FILE__ -> 현재 실행중인 파일의 절대 경로
+
+
+12. 파일
+쓰기
+fopen(파일 경로, mode)
+
+mode - r -> read(읽기 가능)
+           w -> write(쓰기 가능)
+		   a -> append("추가가능)
+
+		  rw("읽고 쓰기")
+		  
+fwrite -
+
+fclose
+
+읽기 
+fopen("파일 경로", mode - r)
+fread(.....) -> EOF(END OF FILE) -> feof($resouce...) -> true
+fclose(....);
+
+
+fgetcsv
+
+
+
+13. 내장 함수(String, Array ...)
+14. 컴포져
+
+15. 기타
+PHP 배열 -> JSON -> json_encode(배열)
+JSON -> PHP 배열 -> json_decode(JSON 문자열)
+
+출력 헤더 - header("헤더 문구");
+
+
+method - GET -> $_GET 
+		   - POST -> $_POST 
+		   - GET, POST, COOKIE -> $_REQUEST
+		   
+BCrypt 암호화 해시 
+해시 생성 - password_hash 함수 
+해시 비교 - password_verify 함수 
+
+
+정규표현식 함수 
+preg_..... 정규표현식 지원 
+
+preg_replace - 정규표현식으로 치환
+preg_match -> 정규표현식 일치 여부
+
+문자열의 길이 - strlen(문자열)
+
+
+
+중복이 안되는 유일한 값 - uniqid();  // 내부적으로는 1/1000 단위 timestamp를 활용해서 
+md5 
+	1. md5(문자열)
+	2. hash('md5', 문자열');
+	
+time() -> 현재시간의 1초단위의 timestamp 
+date("포맷", timestamp);
+Y-m-d H:i:s
+
+자바
+yyyy-MM-dd HH:mm:ss
+
+문자열로 되어 있는 시간 -> timestamp(초단위 정수)
+strtotime("문자열 시간");
+
+
+줄개행 문자(\r\n -> <br>)
+nl2br()
