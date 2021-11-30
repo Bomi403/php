@@ -14,6 +14,11 @@ try {
 			
 			go("../member/login.php", "parent");
 			break;
+		/** 회원 정보 수정 */
+		case "update" : 
+			$member->update($in);
+			reload("parent");
+			break;
 		/** 로그인 처리 */
 		case "login" :
 			$memId = Request::get("memId");
